@@ -14,56 +14,49 @@ import com.facebook.login.widget.LoginButton;
 
 public class LoginAct extends AppCompatActivity {
 
-    private CallbackManager callbackManager;
+   private CallbackManager callbackManager;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_login);
+   @Override
+   protected void onCreate(Bundle savedInstanceState) {
+       super.onCreate(savedInstanceState);
+       setContentView(R.layout.activity_login);
 
-        callbackManager = CallbackManager.Factory.create();
-        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+       callbackManager = CallbackManager.Factory.create();
 
-        if (accessToken == null) {
+       AccessToken accessToken = AccessToken.getCurrentAccessToken();
+       if (accessToken == null) {
 
-            LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
-            loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+           LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
+           loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
 
-                @Override
-                public void onSuccess(LoginResult loginResult) {
+               @Override
+               public void onSuccess(LoginResult loginResult) {
+                   proximaTela();
+               }
 
-                    Log.e("CURSO", "toString: " + loginResult.toString());
-                    Log.e("CURSO", "accesstoken: " + loginResult.getAccessToken());
-                    Log.e("CURSO", "token: " + loginResult.getAccessToken().getToken());
-                    Log.e("CURSO", "granted: " + loginResult.getRecentlyGrantedPermissions());
-                    Log.e("CURSO", "denied: " + loginResult.getRecentlyDeniedPermissions());
-                }
+               @Override
+               public void onCancel() {
+               }
 
-                @Override
-                public void onCancel() {
+               @Override
+               public void onError(FacebookException error) {
+               }
+           });
+       } else {
+           proximaTela();
+       }
+   }
 
-                }
+   public void proximaTela(){
+       Intent intent = new Intent(this, HomeActivity.class);
+       startActivity(intent);
+       finish();
+   }
 
-                @Override
-                public void onError(FacebookException error) {
-
-                }
-            });
-        }else{
-            proximaTela();
-        }
-    }
-
-    public void proximaTela(){
-        Intent intent = new Intent(this, HomeAct.class);
-        startActivity(intent);
-        finish();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
-
-    }
+   @Override
+   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+       super.onActivityResult(requestCode, resultCode, data);
+       callbackManager.onActivityResult(requestCode, resultCode, data);
+   }
+ 
 }
