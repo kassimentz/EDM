@@ -48,7 +48,7 @@ public class LoginAct extends AppCompatActivity {
    }
 
    public void proximaTela(){
-       Intent intent = new Intent(this, HomeActivity.class);
+       Intent intent = new Intent(this, HomeAct.class);
        startActivity(intent);
        finish();
    }
