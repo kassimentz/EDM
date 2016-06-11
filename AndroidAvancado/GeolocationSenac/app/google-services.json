@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "493451141788",
+    "project_id": "geolocationsenac"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:493451141788:android:3e2d56b67fdc44be",
+        "android_client_info": {
+          "package_name": "edm.kassimentz.geolocationsenac"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "493451141788-7tnjt5fdfl7ig8qlv61hkpd139ajogp2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edm.kassimentz.geolocationsenac",
+            "certificate_hash": "395095A79859C644284FB20DB89CF82DEA8C1B3B"
+          }
+        },
+        {
+          "client_id": "493451141788-153clf7vvhefc98qtlt5e7aimehkmaup.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRFStJtst2AL71CGqg4zw55x83TZUg8uI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
