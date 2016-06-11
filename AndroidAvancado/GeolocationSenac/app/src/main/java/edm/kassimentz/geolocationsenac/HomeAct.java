@@ -3,6 +3,7 @@ package edm.kassimentz.geolocationsenac;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
@@ -11,28 +12,52 @@ import android.os.Bundle;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolygonOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.android.clustering.ClusterItem;
+import com.google.maps.android.clustering.ClusterManager;
 
 public class HomeAct extends FragmentActivity implements OnMapReadyCallback,
-        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
+    private LocationRequest mLocationRequest;
+    private Marker markerMyLocation;
+    private LatLng[] posicoes = new LatLng[10];
+    private ClusterManager mClusterManager;
+    ClusterItem first = null;
+    ClusterItem second = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_home);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        posicoes[0] = new LatLng(-29.983067, -51.192679);
+        posicoes[1] = new LatLng(-29.976004, -51.170492);
+        posicoes[2] = new LatLng(-29.963215, -51.191134);
+        posicoes[3] = new LatLng(-29.961245, -51.161308);
+        posicoes[4] = new LatLng(-29.992753, -51.138726);
+        posicoes[5] = new LatLng(-30.001301, -51.151644);
+        posicoes[6] = new LatLng(-30.016612, -51.166106);
+        posicoes[7] = new LatLng(-30.025678, -51.177865);
+        posicoes[8] = new LatLng(-30.040205, -51.183959);
+        posicoes[9] = new LatLng(-30.063090, -51.156959);
     }
 
 
@@ -49,16 +74,6 @@ public class HomeAct extends FragmentActivity implements OnMapReadyCallback,
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        /*LatLng sydney = new LatLng(-34, 151);
-
-        MarkerOptions mOpt = new MarkerOptions();
-        mOpt.position(sydney);
-        mOpt.title("Marker Sidney");
-        mOpt.snippet("Cidade da Austrália");
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));*/
-
         // Create an instance of GoogleAPIClient.
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -68,6 +83,13 @@ public class HomeAct extends FragmentActivity implements OnMapReadyCallback,
                     .build();
             mGoogleApiClient.connect();
         }
+
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(10000);
+        mLocationRequest.setFastestInterval(5000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -80,14 +102,82 @@ public class HomeAct extends FragmentActivity implements OnMapReadyCallback,
             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             return;
         }
+
+        /*PolylineOptions polOpt = new PolylineOptions();
+        polOpt.add(new LatLng(-30.032564, -51.227706));
+        polOpt.add(new LatLng(-30.035556, -51.227968));
+        polOpt.color(Color.BLUE);
+        polOpt.width(3);
+        mMap.addPolyline(polOpt);
+
+        CircleOptions circle = new CircleOptions();
+        circle.center(new LatLng(-29.973658, -51.194998));
+        circle.fillColor(Color.BLUE);
+        circle.strokeColor(Color.BLACK);
+        circle.radius(2000);
+        mMap.addCircle(circle);*/
+
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+
+        /*for (LatLng posicao : posicoes){
+            MarkerOptions mOpt = new MarkerOptions();
+            mOpt.position(posicao);
+            mMap.addMarker(mOpt);
+        }*/
+
+        mClusterManager = new ClusterManager<MyItem>(this, mMap);
+        for(LatLng posicao : posicoes){
+            MyItem offSetItem = new MyItem(posicao.latitude, posicao.longitude);
+            mClusterManager.addItem(offSetItem);
+
+        }
+
+        mClusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener() {
+            @Override
+            public boolean onClusterItemClick(ClusterItem clusterItem) {
+
+                if(first == null){
+                    first = clusterItem;
+                }else
+                {
+                    second = clusterItem;
+                }
+
+                PolylineOptions polOpt = new PolylineOptions();
+                if(first != null && second != null) {
+                    polOpt.add(new LatLng(first.getPosition().latitude, first.getPosition().longitude));
+                    polOpt.add(new LatLng(second.getPosition().latitude, second.getPosition().longitude));
+                    polOpt.color(Color.BLUE);
+                    polOpt.width(3);
+                    mMap.addPolyline(polOpt);
+                }
+
+                return false;
+            }
+
+        });
+
+        mMap.setOnCameraChangeListener(mClusterManager);
+        mMap.setOnMarkerClickListener(mClusterManager);
+
         showMe();
     }
 
     private void showMe() {
         Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        updateLocations(mLastLocation);
+    }
+
+    private void updateLocations(Location mLastLocation) {
         LatLng eu = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-        mMap.addMarker(new MarkerOptions().position(eu).title("Estou aqui"));
+        if(markerMyLocation == null){
+            markerMyLocation = mMap.addMarker(new MarkerOptions().position(eu).title("Estou aqui"));
+        }else{
+            markerMyLocation.setPosition(eu);
+        }
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(eu, 16));
+
+
     }
 
     @Override
@@ -108,5 +198,10 @@ public class HomeAct extends FragmentActivity implements OnMapReadyCallback,
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
         // falha na comunicacao
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        updateLocations(location);
     }
 }
