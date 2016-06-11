@@ -26,11 +26,7 @@
         <activity
             android:name=".LoginAct"
             android:label="Login">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <meta-data
@@ -51,7 +47,13 @@
 
         <activity
             android:name=".HomeAct"
-            android:label="@string/title_activity_home"></activity>
+            android:label="@string/title_activity_home">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
