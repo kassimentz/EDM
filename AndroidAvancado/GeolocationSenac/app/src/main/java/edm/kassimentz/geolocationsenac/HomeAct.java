@@ -9,6 +9,7 @@ import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -27,6 +28,11 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+
 public class HomeAct extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
@@ -34,7 +40,7 @@ public class HomeAct extends FragmentActivity implements OnMapReadyCallback,
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private Marker markerMyLocation;
-    private LatLng[] posicoes = new LatLng[10];
+
     private ClusterManager mClusterManager;
     ClusterItem first = null;
     ClusterItem second = null;
@@ -48,16 +54,6 @@ public class HomeAct extends FragmentActivity implements OnMapReadyCallback,
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        posicoes[0] = new LatLng(-29.983067, -51.192679);
-        posicoes[1] = new LatLng(-29.976004, -51.170492);
-        posicoes[2] = new LatLng(-29.963215, -51.191134);
-        posicoes[3] = new LatLng(-29.961245, -51.161308);
-        posicoes[4] = new LatLng(-29.992753, -51.138726);
-        posicoes[5] = new LatLng(-30.001301, -51.151644);
-        posicoes[6] = new LatLng(-30.016612, -51.166106);
-        posicoes[7] = new LatLng(-30.025678, -51.177865);
-        posicoes[8] = new LatLng(-30.040205, -51.183959);
-        posicoes[9] = new LatLng(-30.063090, -51.156959);
     }
 
 
@@ -126,25 +122,48 @@ public class HomeAct extends FragmentActivity implements OnMapReadyCallback,
         }*/
 
         mClusterManager = new ClusterManager<MyItem>(this, mMap);
-        for(LatLng posicao : posicoes){
+        /*for(LatLng posicao : posicoes){
             MyItem offSetItem = new MyItem(posicao.latitude, posicao.longitude);
             mClusterManager.addItem(offSetItem);
 
-        }
+        }*/
+
+        Call<Posicoes> call = ((CursoApplication) getApplication()).service.searchPositions();
+        call.enqueue(new Callback<Posicoes>() {
+            @Override
+            public void onResponse(Call<Posicoes> call, Response<Posicoes> response) {
+                mClusterManager = new ClusterManager<MyItem>(HomeAct.this, mMap);
+                for (Posicao posicao : response.body().posicoes) {
+                    MyItem offsetItem = new MyItem(posicao.latitude, posicao.longitude);
+                        mClusterManager.addItem(offsetItem);
+
+                    }
+                mMap.setOnCameraChangeListener(mClusterManager);
+                mMap.setOnMarkerClickListener(mClusterManager);
+                }
+
+            @Override
+            public void onFailure(Call<Posicoes> call, Throwable t) {
+                Log.e("CURSO", "Pepino: " + t.getLocalizedMessage());
+            }
+        });
+
+
+        mMap.setOnCameraChangeListener(mClusterManager);
+        mMap.setOnMarkerClickListener(mClusterManager);
 
         mClusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener() {
             @Override
             public boolean onClusterItemClick(ClusterItem clusterItem) {
 
-                if(first == null){
+                if (first == null) {
                     first = clusterItem;
-                }else
-                {
+                } else {
                     second = clusterItem;
                 }
 
                 PolylineOptions polOpt = new PolylineOptions();
-                if(first != null && second != null) {
+                if (first != null && second != null) {
                     polOpt.add(new LatLng(first.getPosition().latitude, first.getPosition().longitude));
                     polOpt.add(new LatLng(second.getPosition().latitude, second.getPosition().longitude));
                     polOpt.color(Color.BLUE);
@@ -157,10 +176,7 @@ public class HomeAct extends FragmentActivity implements OnMapReadyCallback,
 
         });
 
-        mMap.setOnCameraChangeListener(mClusterManager);
-        mMap.setOnMarkerClickListener(mClusterManager);
-
-        showMe();
+        //showMe();
     }
 
     private void showMe() {
@@ -202,6 +218,6 @@ public class HomeAct extends FragmentActivity implements OnMapReadyCallback,
 
     @Override
     public void onLocationChanged(Location location) {
-        updateLocations(location);
+        //updateLocations(location);
     }
 }
