@@ -3,6 +3,7 @@ package edm.kassimentz.googledirections;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.location.Location;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -22,6 +23,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.android.PolyUtil;
 import com.google.maps.android.clustering.ClusterManager;
 
 import retrofit2.Call;
@@ -60,9 +62,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-
-
     }
 
     public void showRota(View v){
@@ -78,16 +77,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         call.enqueue(new Callback<Retorno>() {
             @Override
             public void onResponse(Call<Retorno> call, Response<Retorno> response) {
-                for (Steps step : response.body().routes.get(0).legs.get(0).steps) {
-
-                    PolylineOptions polOpt = new PolylineOptions();
-
-                    polOpt.add(new LatLng(step.start_location.lat, step.start_location.lng));
-                    polOpt.add(new LatLng(step.end_location.lat, step.end_location.lng));
-                    polOpt.color(Color.BLUE);
-                    polOpt.width(3);
-                    mMap.addPolyline(polOpt);
-                }
+                String points = response.body().routes.get(0).overview_polyline.points;
+                PolylineOptions polylineOptions = new PolylineOptions();
+                polylineOptions.addAll(PolyUtil.decode(points));
+                polylineOptions.color(Color.BLUE);
+                mMap.addPolyline(polylineOptions);
 
             }
 
