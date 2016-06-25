@@ -41,6 +41,7 @@ public class CadastroActivity extends AppCompatActivity {
                 task.nome = txtNome.getText().toString();
                 task.descricao = txtDescricao.getText().toString();
                 task.termino = System.currentTimeMillis();
+                task.local = txtLocal.getText().toString();
                 task.iniciada = Boolean.valueOf(rdIniciada.getText().toString());
                 bgRealm.copyToRealmOrUpdate(task);
             }
