@@ -1,5 +1,6 @@
 package edm.kassimentz.exemplorealm;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -50,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.miAddTask:
                 //chamar tela de insercao de task
+                Intent intent = new Intent(this, CadastroActivity.class);
+                startActivity(intent);
         }
         return true;
     }
