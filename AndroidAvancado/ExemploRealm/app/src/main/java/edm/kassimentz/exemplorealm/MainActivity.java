@@ -5,9 +5,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 import io.realm.Sort;
@@ -35,6 +38,40 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         listTasks = (ListView) findViewById(R.id.listTasks);
+        listTasks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+
+                ((CoreApplication) getApplication()).realm.executeTransaction(
+                        new Realm.Transaction() {
+                            @Override
+                            public void execute(Realm bgRealm) {
+                                Task task = results.get(position);
+                                task.termino = System.currentTimeMillis();
+                                task.descricao += " <updated>";
+                                ((CoreApplication) getApplication()).realm.copyToRealmOrUpdate(task);
+                            }
+                        });
+                //alterar
+            }
+        });
+
+        listTasks.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                //exclui
+                ((CoreApplication) getApplication()).realm.executeTransaction(
+                        new Realm.Transaction() {
+                            @Override
+                            public void execute(Realm bgRealm) {
+                                Task task = results.get(position);
+                                task.deleteFromRealm();
+                            }
+                        });
+                return true;
+            }
+        });
+
 
         RealmResults<Task> result = ((CoreApplication)getApplication()).realm.where(Task.class).findAllAsync();
         result.addChangeListener(callback);

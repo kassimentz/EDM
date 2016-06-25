@@ -54,4 +54,5 @@ public class CadastroActivity extends AppCompatActivity {
             public void onError(Throwable error) {}
         });
     }
+
 }
