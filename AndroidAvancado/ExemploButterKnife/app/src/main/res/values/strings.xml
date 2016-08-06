@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">ExemploButterKnife</string>
+    <string name="messageError">Erro de login ou senha</string>
+</resources>
