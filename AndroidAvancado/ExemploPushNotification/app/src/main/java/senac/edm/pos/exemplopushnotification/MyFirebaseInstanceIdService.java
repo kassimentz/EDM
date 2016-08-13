@@ -14,6 +14,8 @@ public class MyFirebaseInstanceIdService extends FirebaseInstanceIdService {
     @Override
     public void onTokenRefresh() {
         //no app real, pegar o token e mandar para o service
+        //XMPP manda notificacoes de um app para o FirebaseCloudMessage que envia para todos
+        //usuarios do aplicativo
         String token = FirebaseInstanceId.getInstance().getToken();
         Log.e("TESTEFCM", "token no service: " + token);
     }
