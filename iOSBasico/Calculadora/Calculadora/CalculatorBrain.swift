@@ -12,32 +12,32 @@ class CalculatorBrain
 {
     var accumulator = 0.0
     
-    func setOperand(operand: Double){
+    func setOperand(_ operand: Double){
         self.accumulator = operand
     }
     
     enum Operation {
-        case Constant(Double)
-        case UnaryOperation((Double)->Double)
-        case BinaryOperation((Double, Double)->Double)
-        case Equals
-        case Clear
+        case constant(Double)
+        case unaryOperation((Double)->Double)
+        case binaryOperation((Double, Double)->Double)
+        case equals
+        case clear
     }
     
     
-    func selectOperation(operation: String) -> Operation{
+    func selectOperation(_ operation: String) -> Operation{
         switch operation {
-        case "π": return Operation.Constant(M_PI)
-        case "√": return Operation.UnaryOperation(sqrt)
-        case "cos": return Operation.UnaryOperation(cos)
-        case "sen": return Operation.UnaryOperation(sin)
-        case "×": return Operation.BinaryOperation({$0 * $1})
-        case "÷": return Operation.BinaryOperation({$0 / $1})
-        case "+": return Operation.BinaryOperation({$0 + $1})
-        case "-": return Operation.BinaryOperation({$0 - $1})
-        case "=": return Operation.Equals
-        case "clr": return Operation.Clear
-        default: return Operation.Equals
+        case "π": return Operation.constant(M_PI)
+        case "√": return Operation.unaryOperation(sqrt)
+        case "cos": return Operation.unaryOperation(cos)
+        case "sen": return Operation.unaryOperation(sin)
+        case "×": return Operation.binaryOperation({$0 * $1})
+        case "÷": return Operation.binaryOperation({$0 / $1})
+        case "+": return Operation.binaryOperation({$0 + $1})
+        case "-": return Operation.binaryOperation({$0 - $1})
+        case "=": return Operation.equals
+        case "clr": return Operation.clear
+        default: return Operation.equals
         }
     }
     
@@ -45,23 +45,23 @@ class CalculatorBrain
         var operand: Double
         var operation: (Double, Double)->Double
         
-        func exec(rhs: Double) -> Double {
+        func exec(_ rhs: Double) -> Double {
             return operation(operand, rhs)
         }
     }
     
     var binaryOperationInfo: BinaryOperationInfo?
     
-    func execute(operation: String){
+    func execute(_ operation: String){
         switch self.selectOperation(operation) {
-        case .Constant(let value): accumulator = value
-        case .UnaryOperation(let function): accumulator = function(accumulator)
-        case .BinaryOperation(let function):
+        case .constant(let value): accumulator = value
+        case .unaryOperation(let function): accumulator = function(accumulator)
+        case .binaryOperation(let function):
             binaryOperationInfo = BinaryOperationInfo(operand: accumulator, operation: function)
-        case .Equals: if let op = binaryOperationInfo{
+        case .equals: if let op = binaryOperationInfo{
                 accumulator = op.exec(accumulator)
             }
-        case .Clear:
+        case .clear:
             accumulator = 0
             binaryOperationInfo = nil
         }
