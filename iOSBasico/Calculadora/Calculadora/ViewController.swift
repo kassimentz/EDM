@@ -16,7 +16,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var display: UILabel!
 
     @IBAction
-    func digitPressed(sender: UIButton) {
+    func digitPressed(_ sender: UIButton) {
         
         let digit = sender.currentTitle!
         
@@ -37,7 +37,7 @@ class ViewController: UIViewController {
         }
     }
 
-    @IBAction func executeOperation(sender: UIButton) {
+    @IBAction func executeOperation(_ sender: UIButton) {
         
         let operation = sender.currentTitle!
         
