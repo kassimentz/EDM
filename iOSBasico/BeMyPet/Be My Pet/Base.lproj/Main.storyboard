@@ -3,40 +3,48 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Be My Pet-->
+        <!--BeMyPet-->
         <scene sceneID="DGJ-XQ-WD8">
             <objects>
-                <tableViewController title="Be My Pet" id="n4t-rL-Zvs" customClass="EspeciesTableViewController" customModule="Be_My_Pet" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="TCD-4r-flo">
+                <tableViewController title="BeMyPet" id="n4t-rL-Zvs" customClass="EspeciesTableViewController" customModule="BeMyPet" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="55" sectionHeaderHeight="28" sectionFooterHeight="28" id="TCD-4r-flo">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" textLabel="RE0-CW-K9C" detailTextLabel="UL4-xp-I7G" style="IBUITableViewCellStyleSubtitle" id="vkn-i2-o5Q">
-                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="55" id="vkn-i2-o5Q" customClass="EspecieTableViewCell" customModule="BeMyPet" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="92" width="600" height="55"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vkn-i2-o5Q" id="jCe-f2-Yof">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="55"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="RE0-CW-K9C">
-                                            <rect key="frame" x="15" y="5" width="32" height="20"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="UL4-xp-I7G">
-                                            <rect key="frame" x="15" y="25" width="31" height="14"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
+                                        <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="HAu-tP-I0D">
+                                            <rect key="frame" x="18" y="18" width="564" height="19"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Espécie" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PWG-8j-Y6Z">
+                                                    <rect key="frame" x="0.0" y="0.0" width="564" height="19"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </stackView>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstItem="HAu-tP-I0D" firstAttribute="leading" secondItem="jCe-f2-Yof" secondAttribute="leadingMargin" constant="10" id="PVn-e7-upy"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="HAu-tP-I0D" secondAttribute="trailing" constant="10" id="Qo1-xF-UDo"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="HAu-tP-I0D" secondAttribute="bottom" constant="10" id="ir2-a6-tJg"/>
+                                        <constraint firstItem="HAu-tP-I0D" firstAttribute="top" secondItem="jCe-f2-Yof" secondAttribute="topMargin" constant="10" id="urp-q5-w19"/>
+                                    </constraints>
                                 </tableViewCellContentView>
+                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <connections>
+                                    <outlet property="especie" destination="PWG-8j-Y6Z" id="pmC-s4-HUF"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -44,7 +52,7 @@
                             <outlet property="delegate" destination="n4t-rL-Zvs" id="u7a-n7-4JF"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Be My Pet - Espécies" id="YYr-PQ-FRn"/>
+                    <navigationItem key="navigationItem" title="BeMyPet - Espécies" id="YYr-PQ-FRn"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fN5-AM-o1x" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

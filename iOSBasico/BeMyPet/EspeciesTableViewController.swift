@@ -44,9 +44,10 @@ class EspeciesTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath)
-        
-        cell.textLabel?.text = "Espécie:"
-        cell.detailTextLabel?.text = especies[indexPath.row]
+        if let celula = cell as? EspecieTableViewCell {
+            let (especie) = especies[indexPath.row]
+            celula.configure(especie)
+        }
         
         return cell
     }
