@@ -14,6 +14,7 @@
 		C2F406241D8D850A00C64625 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C2F406221D8D850A00C64625 /* LaunchScreen.storyboard */; };
 		C2F4062F1D8D89E000C64625 /* EspeciesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F4062E1D8D89E000C64625 /* EspeciesTableViewController.swift */; };
 		C2F406321D8DA91400C64625 /* EspecieTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F406311D8DA91400C64625 /* EspecieTableViewCell.swift */; };
+		C2F406341D8DB6B500C64625 /* EspecieDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F406331D8DB6B500C64625 /* EspecieDetailViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		C2F406251D8D850A00C64625 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C2F4062E1D8D89E000C64625 /* EspeciesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EspeciesTableViewController.swift; sourceTree = "<group>"; };
 		C2F406311D8DA91400C64625 /* EspecieTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EspecieTableViewCell.swift; sourceTree = "<group>"; };
+		C2F406331D8DB6B500C64625 /* EspecieDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EspecieDetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +61,7 @@
 			isa = PBXGroup;
 			children = (
 				C2F406301D8D8A0C00C64625 /* EspecieController */,
+				C2F406351D8DB6C200C64625 /* EspecieDetail */,
 				C2F4062C1D8D85F900C64625 /* View */,
 				C2F4062D1D8D861500C64625 /* Data Model */,
 				C2F4062B1D8D854300C64625 /* Support Files */,
@@ -102,6 +105,14 @@
 			);
 			name = EspecieController;
 			path = ..;
+			sourceTree = "<group>";
+		};
+		C2F406351D8DB6C200C64625 /* EspecieDetail */ = {
+			isa = PBXGroup;
+			children = (
+				C2F406331D8DB6B500C64625 /* EspecieDetailViewController.swift */,
+			);
+			name = EspecieDetail;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -177,6 +188,7 @@
 			files = (
 				C2F4062F1D8D89E000C64625 /* EspeciesTableViewController.swift in Sources */,
 				C2F4061F1D8D850A00C64625 /* Be_My_Pet.xcdatamodeld in Sources */,
+				C2F406341D8DB6B500C64625 /* EspecieDetailViewController.swift in Sources */,
 				C2F406321D8DA91400C64625 /* EspecieTableViewCell.swift in Sources */,
 				C2F406171D8D850A00C64625 /* AppDelegate.swift in Sources */,
 			);

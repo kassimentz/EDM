@@ -8,7 +8,13 @@
 
 import UIKit
 
-class EspeciesTableViewController: UITableViewController {
+class EspeciesTableViewController: UITableViewController, UISplitViewControllerDelegate {
+    
+    // MARK: View Controller
+    
+    func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController:UIViewController, ontoPrimaryViewController primaryViewController:UIViewController) -> Bool {
+        return true
+    }
     
     // MARK : - Model
     let especies = [
@@ -27,6 +33,7 @@ class EspeciesTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        splitViewController?.delegate = self
     }
 
     // MARK: - Table view data source
@@ -88,14 +95,24 @@ class EspeciesTableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        if(segue.identifier == "showDetail"){
+            if let indexPath = self.tableView.indexPathForSelectedRow{
+                let(especie) = especies[indexPath.row]
+                if let navcon = segue.destinationViewController as? UINavigationController {
+                    if let destino = navcon.visibleViewController as? EspecieDetailViewController {
+                            destino.especie = "Espécie: \(especie) "
+                    }
+                }
+            }
+        }
     }
-    */
+    
 
 }
